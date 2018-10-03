@@ -1,6 +1,6 @@
 ##### RED Interactive Agency - Ad Technology
 
-# tmpl-standard-base
+# tmpl-monet-intro-endframe-branded
 
 [Getting Started](#getting-started)
 
