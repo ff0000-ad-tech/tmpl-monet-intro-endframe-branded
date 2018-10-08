@@ -13,7 +13,7 @@ import '@netflixadseng/wc-netflix-video'
 import '@netflixadseng/wc-netflix-fonts'
 import { UIComponent, UIBorder, UIButton, UIImage, TextFormat, UITextField, UISvg } from 'ad-ui'
 import '@size/images/default_300x250.jpg'
-import { MonetUtils } from 'ad-utils'
+import { MonetUtils. Si } from 'ad-utils'
 
 
 /* -- CONTROL ----------------------------------------------------------------------------------------------------
