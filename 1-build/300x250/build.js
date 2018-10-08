@@ -1,4 +1,4 @@
-/* BUILD SOURCE: Netflix Monet - Intro/Endframe Branded / OPTIONS:  / @ff0000-ad-tech/tmpl-build-sources: 1.0.1 / Created: 10/03/18 04:07pm */
+/* BUILD SOURCE: Netflix Monet - Intro/Endframe Branded / OPTIONS:  / AdApp: 3.1.0 / AdHtml: v0.1.3 / Created: 07/24/18 10:59am */
 import '@netflixadseng/wc-netflix-brand-logo'
 import '@netflixadseng/wc-netflix-cta'
 import '@netflixadseng/wc-netflix-text'
@@ -12,9 +12,10 @@ import { Common } from '@common/js/control/Common.js'
 import '@netflixadseng/wc-netflix-video'
 import '@netflixadseng/wc-netflix-fonts'
 import { UIComponent, UIBorder, UIButton, UIImage, TextFormat, UITextField, UISvg } from 'ad-ui'
-import '@size/images/default_300x250.jpg'
 import { MonetUtils } from 'ad-utils'
-
+import '@size/images/keyart.jpg'
+import '@size/images/tt.png'
+import '@size/images/pedigree.png'
 
 /* -- CONTROL ----------------------------------------------------------------------------------------------------
  *
@@ -36,7 +37,7 @@ window.Control = new function() {
 				this.prepareBuild()
 			})
 			.catch(err => {
-				throw(err)
+				throw err
 			})
 	}
 
@@ -45,76 +46,47 @@ window.Control = new function() {
 		console.log('Control.prepareBuild()')
 		Control.preMarkup()
 
-
 		View.main = new Main()
 		View.intro = new Intro()
 		View.endFrame = new EndFrame()
-		View.trailerFrame = new TrailerFrame()
 		View.ribbon = new NetflixRibbon()
 		View.mainBorder = new MainBorder()
-
-
-
-
-
 	}
 
 	this.preMarkup = function() {
 		console.log('Control.preMarkup()')
-		
+
 		View.netflixFonts = document.createElement('netflix-fonts')
 		Markup.get('main').appendChild(View.netflixFonts)
-
 	}
 
 	this.postMarkup = function() {
 		console.log('Control.postMarkup()')
 		Gesture.add(View.endFrame, GestureEvent.CLICK, Control.handleClick)
-		Gesture.add(View.trailerFrame.bg, GestureEvent.CLICK, Control.handleTrailerFrameClick)
-
-
 
 		View.endFrame.hide()
-		
-		Gesture.add(View.endFrame, GestureEvent.OVER, function(){
+
+		Gesture.add(View.endFrame, GestureEvent.OVER, function() {
 			View.endFrame.cta.mouseover()
 		})
-		Gesture.add(View.endFrame, GestureEvent.OUT, function(){
+
+		Gesture.add(View.endFrame, GestureEvent.OUT, function() {
 			View.endFrame.cta.mouseout()
 		})
-		Gesture.add(View.trailerFrame.bg, GestureEvent.OVER, function(){
-			View.trailerFrame.cta.mouseover()
-		})
-		Gesture.add(View.trailerFrame.bg, GestureEvent.OUT, function(){
-			View.trailerFrame.cta.mouseout()
-		})
-		View.trailerFrame.hide()
 
-		View.trailerFrame.mainVideoPlayer.addEventListener('video-close', Animation.hideTrailerFrame)
-		View.trailerFrame.mainVideoPlayer.addEventListener('video-complete', Animation.hideTrailerFrame)
 		View.ribbon.addEventListener('coverComplete', function(event) {
 			Animation.playIntro()
 		})
-
-
 	}
 
 	// IMPORTANT!!! If this method has content, Call this function when your animation is complete!
 	this.animationComplete = function() {
 		console.log('Control.animationComplete()')
-
 	}
 
-	this.handleClick = function(event) {	
-
-		Network.exit( 
-			overridePlatformExit, 
-			MonetUtils.getDataByKey('Exit_URL')
-		); 
+	this.handleClick = function(event) {
+		Network.exit(overridePlatformExit, MonetUtils.getDataByKey('Exit_URL'))
 	}
-
-
-
 
 	this.handleMonetLoadComplete = function(element) {
 		console.log('Control.handleMonetLoadComplete()')
@@ -122,110 +94,40 @@ window.Control = new function() {
 			.then(data => {
 				console.log('	-> All Netflix web components ready')
 				// monet data is now assigned to MonetUtils
-				adData.hideStack = MonetUtils.getDataByKey('hideStack')
+				adData.hasFTM = MonetUtils.getDataByKey('FTM').length > 0 ? true : false
+				adData.hasTuneIn = MonetUtils.getDataByKey('Tune_In').length > 0 ? true : false
+
+				// Ratings Bug
+				adData.hasRatings = MonetUtils.getDataByKey('Ratings_Bug_20x20').length > 0 ? true : false
+				if( adData.hasRatings ) adData.ratingsSrc = ImageManager.addToLoad( MonetUtils.getDataByKey('Ratings_Bug_20x20'), { forCanvas: false })
 
 				// proceed with ad AFTER the setData() Promise has been fulfilled
-				Control.postMarkupStyling()
-				Control.postMarkup()
-				Animation.startAd()
+				ImageManager.load(function() {
+					View.intro.postMarkupStyling()
+					View.endFrame.postMarkupStyling()
+					Control.postMarkup()
+					Animation.startAd()
+				})
 			})
 			.catch(error => {
 				global.failAd()
 			})
 	}
-	
-	this.postMarkupStyling = function(){
-		Styles.setCss(View.endFrame.pedigree, {
-			color: '#ffffff',
-			fontFamily: 'Netflix Sans'
-		});
-		Align.set(View.endFrame.pedigree, {
-			x: Align.CENTER,
-			y: {
-				type: Align.CENTER,
-				offset: 12
-			}	
-		})
 
-		View.intro.netflixLogo.progress(1)
-		Styles.setCss(View.intro.netflixLogo, { opacity: 0 })
-		Align.set(View.intro.netflixLogo, {
-			x: {
-				type: Align.LEFT,
-				offset: 12					
-			},
-			y: {
-				type: Align.BOTTOM,
-				offset: -11,
-			}	
-		})
-
-		Align.set(View.endFrame.cta, {
-			x: {
-				type: Align.RIGHT,
-				offset: -12
-			},
-			y: {
-				type: Align.BOTTOM,
-				offset: -12
-			}
-		})
-
-		Align.set(View.trailerFrame.cta, {
-			x: {
-				type: Align.RIGHT,
-				offset: -12
-			},
-			y: {
-				type: Align.BOTTOM,
-				offset: -12
-			}
-		})
-
-		Align.set(View.endFrame.netflixLogo, {
-			x: {
-				type: Align.LEFT,
-				offset: 12					
-			},
-			y: {
-				type: Align.BOTTOM,
-				offset: -11,
-			}	
-		})
-
-		Align.set(View.trailerFrame.netflixLogo, {
-			x: {
-				type: Align.LEFT,
-				offset: 12					
-			},
-			y: {
-				type: Align.BOTTOM,
-				offset: -11,
-			}	
-		})
-
-
+	this.postMarkupStyling = function() {
 	}
-	
+
 	this.handleIntroVideoComplete = function(event) {
 		Animation.showEndFrame()
-
 	}
 
 	this.handleIntroClick = function(event) {
+		View.intro.introVideoPlayer.pause()
 		View.intro.hide()
 		Animation.showEndFrame()
 		Control.handleClick()
 	}
-	
-	this.handleTrailerFrameClick = function(event) {
-		console.log('Control.handleTrailerFrameClick()')
-		Animation.hideTrailerFrame()
-		Control.handleClick(event)
-	}
-
-
-}
+}()
 
 /* -- VIEW ------------------------------------------------------------------------------------------------------
  *
@@ -247,26 +149,24 @@ function Main() {
 		userSelect: 'none'
 	})
 
-Styles.setCss(T, { backgroundColor:'#ffffff' });
-
+	Styles.setCss(T, { backgroundColor: '#ffffff' })
 
 	return T
 }
 
-
 // ==============================================================================================================
-function Intro(){
+function Intro() {
 	var T = new UIComponent({
-		id : 'intro-container',
-		target : View.main,
-		css : {
-			width : 'inherit',
-			height : 'inherit'
+		id: 'intro-container',
+		target: View.main,
+		css: {
+			width: 'inherit',
+			height: 'inherit'
 		}
 	})
 
 	T.introVideoPlayer = document.createElement('netflix-video')
-	T.introVideoPlayer.id = "intro-video"
+	T.introVideoPlayer.id = 'intro-video'
 	T.introVideoPlayer.setAttribute('width', adParams.adWidth)
 	T.introVideoPlayer.setAttribute('height', adParams.adHeight)
 	T.introVideoPlayer.setAttribute('close-color-1', adData.colors.red)
@@ -280,129 +180,161 @@ function Intro(){
 	T.appendChild(T.introVideoPlayer)
 
 	T.netflixLogo = document.createElement('netflix-brand-logo')
+	T.netflixLogo.setAttribute('width', 90)
 	T.appendChild(T.netflixLogo)
-		
-		
 
+	T.postMarkupStyling = function(){
 
-	return T
-}
+		let T = View.intro
 
-// ==============================================================================================================
-function EndFrame(){
-	var T = new UIComponent({
-		id : 'end-frame-container',
-		target : View.main,
-		css : {
-			width : 'inherit',
-			height : 'inherit'
-		}
-	})
-
-	T.bg = document.createElement('netflix-img')
-	T.bg.setAttribute('id', 'endframe-bg')
-	T.bg.setAttribute('data-dynamic-key', 'endframe_bg_300x250')
-	T.appendChild(T.bg)
-
-	T.pedigree = document.createElement('netflix-text')
-	T.pedigree.setAttribute('data-dynamic-key', 'Pedigree')
-	T.appendChild(T.pedigree)
-	
-	T.netflixLogo = document.createElement('netflix-brand-logo')
-	T.appendChild(T.netflixLogo)
-		
-		
-	T.playBtn = new UIButton({
-		id: 'cicle-play-btn',
-		target: T,
-		css: {
-			width: 44,
-			height: 44
-		},
-		align: Align.RIGHT,
-		icon: [
-			new UISvg({
-				source: adData.svg.circle_play_btn,
-				css: {
-					width: 24,
-					height: 24
-				},
-				align: Align.CENTER
-			}),
-		],
-		onClick: Animation.showTrailerFrame,
-		onOver: function() {
-			TweenLite.set('.play_btn_svg_circle', { fill: adData.colors.white });
-			TweenLite.set('.play_btn_svg_arrow', { fill: adData.colors.red });
-		},
-		onOut: function() {
-			TweenLite.set('.play_btn_svg_circle', { fill: adData.colors.red });
-			TweenLite.set('.play_btn_svg_arrow', { fill: adData.colors.white });
-		}			
-	})	
-
-	T.cta = document.createElement('netflix-cta')
-	T.cta.setAttribute('data-dynamic-key', 'CTA')
-	T.cta.setAttribute('arrow', '')
-	T.cta.setAttribute('border', '')
-	T.appendChild(T.cta)
-
-
-
-	return T
-}
-
-
-// ==============================================================================================================
-function TrailerFrame(){		
-	var T = new UIComponent ({
-		id: 'trailer-frame',
-		target: View.main,
-		css: {
-			width: adParams.adWidth,
-			height: adParams.adHeight,
-		}
-	})
-
-	T.hide = function(){
-		TweenLite.set( T, { y: -adParams.adHeight } )
+		Styles.setCss(View.intro.netflixLogo, { opacity: 0 })
+		Align.set( T.netflixLogo, {
+			x: {
+				type: Align.LEFT,
+				offset: 10
+			},
+			y: {
+				type: Align.BOTTOM,
+				offset: -10
+			}
+		})
 	}
 
-	T.bg = new UIComponent ({
-		id: 'trailer-frame-bg',
-		target: T,
+	return T
+}
+
+// ==============================================================================================================
+function EndFrame() {
+	var T = new UIComponent({
+		id: 'end-frame-container',
+		target: View.main,
 		css: {
-			width: adParams.adWidth,
-			height: 80,
-			backgroundColor: adData.colors.grey
-		},
-		align: Align.BOTTOM
+			width: 'inherit',
+			height: 'inherit'
+		}
 	})
 
-	T.mainVideoPlayer = document.createElement('netflix-video');
-	T.mainVideoPlayer.id = "main-video";
-	T.mainVideoPlayer.setAttribute('width', 300)
-	T.mainVideoPlayer.setAttribute('height', 200)
-	T.mainVideoPlayer.setAttribute('color-1', adData.colors.red);
-	T.mainVideoPlayer.setAttribute('color-2', adData.colors.white);
-	T.mainVideoPlayer.setAttribute('close-color-1', adData.colors.red);
-	T.mainVideoPlayer.setAttribute('close-color-2', adData.colors.white);
-	T.mainVideoPlayer.setAttribute('data-dynamic-key', 'Trailer')
-	T.mainVideoPlayer.setAttribute('controls', '');
-	T.mainVideoPlayer.addEventListener('video-click', Control.handleTrailerFrameClick);
-	T.appendChild(T.mainVideoPlayer);
-	
+	T.keyart = new UIImage({
+		id: 'keyart',
+		target: T,
+		source: 'keyart'
+	})
+
+	T.pedigree = new UIImage({
+		id: 'pedigree',
+		target: T,
+		source: 'pedigree',
+		retina: true
+	})
+
+	T.tt = new UIImage({
+		id: 'tt',
+		target: T,
+		source: 'tt',
+		retina: true
+	})
+
+	T.ftm = document.createElement('netflix-text')
+	T.ftm.setAttribute('data-dynamic-key', 'FTM')
+	T.appendChild(T.ftm)
+
+	T.tunein = document.createElement('netflix-text')
+	T.tunein.setAttribute('data-dynamic-key', 'Tune_In')
+	T.appendChild(T.tunein)
+
+	T.netflixLogo = document.createElement('netflix-brand-logo')
+	T.netflixLogo.setAttribute('width', 90)
+	T.appendChild(T.netflixLogo)
+
 	T.cta = document.createElement('netflix-cta')
 	T.cta.setAttribute('data-dynamic-key', 'CTA')
 	T.cta.setAttribute('arrow', '')
 	T.cta.setAttribute('border', '')
+	T.cta.setAttribute('width', 90)
+	T.cta.setAttribute('height', 24)
 	T.appendChild(T.cta)
+	
+	T.postMarkupStyling = function(){
 
-	T.netflixLogo = document.createElement('netflix-brand-logo')
-	T.appendChild(T.netflixLogo)
-		
-		
+		let T = View.endFrame
 
+		// Ratings Bug
+		if ( adData.hasRatings ) {
+			T.ratingsBug = new UIImage({
+				target: T,
+				id: 'ratingsBug',
+				source: adData.ratingsSrc,
+				css: {
+					width: 20,
+					height: 20
+				}
+			})
+
+			Align.set( T.ratingsBug, {
+				x: {
+					type: Align.RIGHT,
+					offset: -5
+				},
+				y: {
+					type: Align.BOTTOM,
+					offset: -5
+				}
+			})
+		}
+		
+		Styles.setCss( T.tunein, {
+			color: '#fff',
+			fontSize: 16,
+			letterSpacing: 1,
+			textAlign: 'center',
+			visibility: adData.hasFTM ? 'hidden' : 'visible'
+		})
+		Align.set(T.tunein, {
+			x: Align.CENTER,
+			y: {
+				type: Align.TOP,
+				offset: 184
+			}
+		})
+
+		Styles.setCss( T.ftm, {
+			color: '#fff',
+			fontSize: 14,
+			letterSpacing: 1,
+			textAlign: 'center',
+			visibility: adData.hasFTM ? 'visible' : 'hidden'
+		})
+		Align.set(T.ftm, {
+			x: Align.CENTER,
+			y: {
+				type: Align.TOP,
+				offset: 184
+			}
+		})
+
+		Align.set(T.netflixLogo, {
+			x: {
+				type: Align.LEFT,
+				offset: 44
+			},
+			y: {
+				type: Align.TOP,
+				offset: 210
+			}
+		})
+
+		T.cta.resize()
+		Align.set(T.cta, {
+			x: {
+				type: Align.LEFT,
+				offset: 166
+			},
+			y: {
+				type: Align.TOP,
+				offset: 210
+			}
+		})
+	}
 
 	return T
 }
@@ -417,17 +349,14 @@ function NetflixRibbon() {
 	return T
 }
 
-
 // ==============================================================================================================
-function MainBorder(){
+function MainBorder() {
 	new UIBorder({
-		target : View.main,
-		size : 1,
-		color : '#000000'
+		target: View.main,
+		size: 1,
+		color: '#000'
 	})
 }
-
-
 
 /* -- ANIMATION -------------------------------------------------------------------------------------------------
  *
@@ -440,61 +369,45 @@ window.Animation = new function() {
 
 		// show the main container
 		global.removePreloader()
-		Styles.setCss(View.main, {opacity: 1})
+		Styles.setCss(View.main, { opacity: 1 })
 
 		View.ribbon.play()
-
 	}
 
-	this.playIntro = function(){
+	this.playIntro = function() {
 		if (Device.type == 'desktop') {
-			Styles.setCss(View.intro.netflixLogo,{ opacity:1 })
+			Styles.setCss(View.intro.netflixLogo, { opacity: 1 })
 			View.intro.introVideoPlayer.play()
 
-			TweenLite.delayedCall(2.5, function(){
+			TweenLite.delayedCall(5, function() {
 				View.intro.netflixLogo.reverse()
 			})
-			TweenLite.delayedCall(6, function(){
+			TweenLite.delayedCall(.5, function() {
 				View.intro.netflixLogo.play()
 			})
-			TweenLite.to(View.intro.netflixLogo, .25, { delay:8, alpha:0 })
+			TweenLite.to(View.intro.netflixLogo, 0.25, { delay: 5.9, alpha: 0 })
 		} else {
 			Animation.showEndFrame()
 		}
 	}
 
-	
 	this.showEndFrame = function() {
 		console.log('Animation.showEndFrame()')
-		
-		View.intro.hide()
-		View.endFrame.show()
 
+		var EF = View.endFrame
+		var IN = View.intro
 
+		IN.hide()
+		EF.show()
+
+		let delay = 0
+		TweenLite.from( EF.tunein, .5, { alpha: 0, delay: delay })
+		TweenLite.from( EF.ftm, .5, { alpha: 0, delay: delay })
+		TweenLite.from( EF.netflixLogo, .5, { alpha:0, delay: delay })
+		TweenLite.from( EF.cta, .5, { alpha: 0, delay: delay })
+
+		TweenLite.delayedCall( delay, function(){
+			EF.netflixLogo.play()
+		})
 	}
-
-	
-	this.hideTrailerFrame = function(){
-		var fsElement = FullScreen.isFullScreen()
-		var hasFullScreenVideo = (fsElement && fsElement.tagName === 'VIDEO')
-		// iOS safari doesn't have fullscreen info under document
-		var trailerVideo = Markup.get('<video>', View.trailerFrame.mainVideoPlayer)[0]
-
-		// do nothing if video is in fullscreen mode
-		if (hasFullScreenVideo || trailerVideo.webkitDisplayingFullscreen) {
-			return
-		}
-		TweenLite.to( View.trailerFrame, 1, { y:-adParams.adHeight, ease:Expo.easeInOut })
-		TweenLite.to( View.endFrame, 1, { y:0, ease:Expo.easeInOut })
-		View.trailerFrame.mainVideoPlayer.pause()
-		Animation.showEndFrame()
-	}
-
-	this.showTrailerFrame = function(){
-		TweenLite.to( View.trailerFrame, 1, { y:0, ease:Expo.easeOut })
-		TweenLite.to( View.endFrame, 1, { y:175, ease:Expo.easeOut })
-		View.trailerFrame.mainVideoPlayer.play()
-	}
-
-
-}
+}()
