@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- BUILD SOURCE: Netflix Monet - Intro/Endframe Branded / OPTIONS:  / @ff0000-ad-tech/tmpl-build-sources: 1.0.1 / Created: 10/03/18 04:07pm -->
+<!-- BUILD SOURCE: Netflix Monet - Intro/Endframe Branded / OPTIONS:  / @ff0000-ad-tech/tmpl-build-sources: 1.0.1 / Created: 10/25/18 06:56pm -->
 
 <head>
 	<meta name="viewport" content="initial-scale = 1.0,maximum-scale = 1.0" />
@@ -95,26 +95,6 @@
 
 		/*-- Red.Settings.environments.start --*/
 		var environments = [
-				{
-					id: "debug",
-					runPath: "../",
-					adPath: "300x250/",
-				},
-				{
-					id: "ff0000-cdn",
-					runPath: "http://red.ff0000-cdn.net/ad_templates/html/mobile_base/",
-					adPath: "300x250/",
-				},
-				{
-					id: "dc-campaign",
-					runPath: "",
-					adPath: "",
-				},
-				{
-					id: "netflix-monet",
-					runPath: "",
-					adPath: "",
-				},
 
 			];
 		/*-- Red.Settings.environments.end --*/
@@ -127,15 +107,9 @@
 		/*-- Red.Settings.external_includes.end --*/
 
 
-		/*-- Red.Settings.runtime_includes.start --*/
-		var runtimeIncludes = {
-			};
-		/*-- Red.Settings.runtime_includes.end --*/
-
-
 		function onImpression(fbaContent) {
 			console.log('Index.onImpression()')
-			Control.prepare(fbaContent)
+Ad.launch(fbaContent)
 
 
 		}
@@ -348,24 +322,25 @@ var netflixPreloader
 
 		}
 
-		function logMonetClick(targetId, event) {
-			Monet.logEvent('CLICK', {
-				src: targetId,
-				coords: {
-					"x": event.mouse.global.x,
-					"y": event.mouse.global.y
-				}
-			});
+function logMonetClick(targetId, event) {
+	Monet.logEvent('CLICK', {
+		src: targetId,
+		coords: {
+			x: event.mouse.global.x,
+			y: event.mouse.global.y
 		}
+	})
+}
 
-		function jsBundleLoadComplete() {
-			console.log('Index.jsBundleLoadComplete()')
-			View.monetIntegrator = document.createElement('monet-integrator')
-			View.monetIntegrator.addEventListener('ready', function (event) {
-				Control.handleMonetLoadComplete(this)
-			})
-			document.getElementById('main').appendChild(View.monetIntegrator)
-		}
+function jsBundleLoadComplete() {
+	console.log('Index.jsBundleLoadComplete()')
+	View.monetIntegrator = document.createElement('monet-integrator')
+	View.monetIntegrator.addEventListener('ready', function(event) {
+		Ad.initMonet(this)
+	})
+	document.getElementById('main').appendChild(View.monetIntegrator)
+}
+
 
 
 		// ad-global bundle

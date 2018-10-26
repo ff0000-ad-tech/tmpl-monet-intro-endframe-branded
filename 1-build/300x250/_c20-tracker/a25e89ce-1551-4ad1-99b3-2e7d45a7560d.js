@@ -7,7 +7,7 @@ module.exports = {
   "id": "a25e89ce-1551-4ad1-99b3-2e7d45a7560d",
   "name": "bt-ES6-Webpack-Intro-Endframe-Branded",
   "description": "C20/Monet-compatible templates that use  https://github.com/ff0000-ad-tech/ad-docs/blob/master/README.md",
-  "type": "build_templates",
+  "type": "templates",
   "context": "RED Interactive",
   "state": "development",
   "updated": 1522796900588,
