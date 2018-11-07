@@ -24,11 +24,12 @@ export class Ad {
 
 
 		View.main = new Main()
-View.intro = new Intro()
-View.endFrame = new EndFrame()
+View.intro = new Intro({ target: View.main })
+View.endFrame = new EndFrame({ target: View.main })
 
 		View.ribbon = new NetflixRibbon()
-		View.mainBorder = new MainBorder()
+View.mainBorder = new MainBorder()
+
 
 
 		Control.postMarkup()

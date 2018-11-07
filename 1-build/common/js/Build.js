@@ -8,6 +8,7 @@ import '@size/images/keyart.jpg'
 import { Animation } from '@common/js/Animation.js'
 import { Control } from '@common/js/Control.js'
 import '@netflixadseng/wc-netflix-flushed-ribbon'
+import { ObjectUtils } from 'ad-utils'
 import '@netflixadseng/wc-netflix-video'
 import '@netflixadseng/wc-netflix-fonts'
 import '@size/images/pedigree.png'
@@ -34,15 +35,15 @@ export function Main() {
 }
 
 // ==============================================================================================================
-export function Intro() {
-	var T = new UIComponent({
+export function Intro(arg) {
+	const base = {
 		id: 'intro-container',
-		target: View.main,
 		css: {
 			width: 'inherit',
 			height: 'inherit'
 		}
-	})
+	}
+	const T = new UIComponent(ObjectUtils.defaults(arg, base, true))
 
 // video
 T.introVideoPlayer = document.createElement('netflix-video')
@@ -85,15 +86,15 @@ T.postMarkupStyling = function() {
 }
 
 // ==============================================================================================================
-export function EndFrame() {
-	var T = new UIComponent({
+export function EndFrame(arg) {
+	const base = {
 		id: 'end-frame-container',
-		target: View.main,
 		css: {
 			width: 'inherit',
 			height: 'inherit'
 		}
-	})
+	}
+	const T = new UIComponent(ObjectUtils.defaults(arg, base, true))
 
 T.keyart = new UIImage({
 	id: 'keyart',

@@ -9,9 +9,9 @@
 	"license": "MIT",
 	"dependencies": {
 		"@netflixadseng/pk-component-utils": "^3.0.0",	
-		"@netflixadseng/wc-netflix-preloader": "^4.0.0",
+		"@netflixadseng/wc-netflix-preloader": "^4.1.0",
 		"@netflixadseng/wc-netflix-cta": "^4.0.0",
-		"@netflixadseng/wc-monet-integrator": "^4.0.0",
+		"@netflixadseng/wc-monet-integrator": "^4.1.0",
 		"@netflixadseng/wc-netflix-video": "^4.0.0",
 		"@netflixadseng/wc-netflix-flushed-ribbon": "^4.0.0",
 		"@netflixadseng/wc-netflix-brand-logo": "^4.0.0",
@@ -31,11 +31,11 @@
 		"@ff0000-ad-tech/ad-load": "^2.0.0",
 		"@ff0000-ad-tech/ad-particles": "^2.0.0",
 		"@ff0000-ad-tech/ad-polyfills": "^1.0.3",
-		"@ff0000-ad-tech/ad-video": "^1.0.5",
+		"@ff0000-ad-tech/ad-video": "^2.0.0",
 		"@ff0000-ad-tech/ad-ui": "^1.2.2",
 		"@ff0000-ad-tech/ad-utils": "^2.0.0",
 		"@ff0000-ad-tech/ad-view": "^1.0.5",
-		"@ff0000-ad-tech/ad-velvet": "^2.0.1",
+		"@ff0000-ad-tech/ad-velvet": "^3.0.1",
 		"core-js": "^2.5.7"
 	}
 }

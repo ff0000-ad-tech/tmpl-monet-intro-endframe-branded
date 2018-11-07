@@ -29,9 +29,10 @@ Gesture.add(View.endFrame, GestureEvent.OUT, function() {
 	View.endFrame.cta.mouseout()
 })
 
-		View.ribbon.addEventListener('coverComplete', function(event) {
-			Animation.playIntro()
-		})
+View.ribbon.addEventListener('coverComplete', function(event) {
+	event.stopImmediatePropagation() // this event was coming through twice
+	Animation.playIntro()
+})
 
 
 	}
