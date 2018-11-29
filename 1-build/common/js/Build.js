@@ -8,12 +8,9 @@ import '@size/images/keyart.jpg'
 import { Animation } from '@common/js/Animation.js'
 import { Control } from '@common/js/Control.js'
 import '@netflixadseng/wc-netflix-flushed-ribbon'
-import { ObjectUtils } from 'ad-utils'
 import '@netflixadseng/wc-netflix-video'
-import '@netflixadseng/wc-netflix-fonts'
-import '@size/images/pedigree.png'
 import { UIComponent, UIBorder, UIButton, UIImage, TextFormat, UITextField, UISvg } from 'ad-ui'
-import '@size/images/tt.png'
+import { ObjectUtils } from 'ad-utils'
 
 
 export function Main() {
@@ -102,29 +99,36 @@ T.keyart = new UIImage({
 	source: 'keyart'
 })
 
-T.pedigree = new UIImage({
+T.pedigree = new UITextField({
+	target: T,
 	id: 'pedigree',
-	target: T,
-	source: 'pedigree',
-	retina: true
-})
+	css: {
+		width: 200,
+		height: 50
+	},
+	fontSize: 16,
+	fontFamily: 'Netflix Sans',
+	format: TextFormat.INLINE_FIT_CLAMP,
+	alignText: Align.CENTER,
+	spacing: -0.2,
+	text: 'A NETFLIX FILM'
+});
 
-T.tt = new UIImage({
-	id: 'tt',
-	target: T,
-	source: 'tt',
-	retina: true
-})
+// title treatment
+T.tt = document.createElement('netflix-img')
+T.tt.setAttribute('data-dynamic-key', 'Title_Treatment')
+T.tt.setAttribute('width', 300)
+T.appendChild(T.tt)
 
-// ftm
+// free trial messaging
 T.ftm = document.createElement('netflix-text')
 T.ftm.setAttribute('data-dynamic-key', 'FTM')
 T.appendChild(T.ftm)
 
 // tune-in
-T.tunein = document.createElement('netflix-text')
-T.tunein.setAttribute('data-dynamic-key', 'Tune_In')
-T.appendChild(T.tunein)
+T.tuneIn = document.createElement('netflix-text')
+T.tuneIn.setAttribute('data-dynamic-key', 'Tune_In')
+T.appendChild(T.tuneIn)
 
 // logo
 T.netflixLogo = document.createElement('netflix-brand-logo')
@@ -140,63 +144,66 @@ T.cta.setAttribute('width', 90)
 T.cta.setAttribute('height', 24)
 T.appendChild(T.cta)
 
+// ratings bug
+T.ratingsBug = document.createElement('netflix-img')
+T.ratingsBug.setAttribute('data-dynamic-key', 'Ratings_Bug_20x20')
+T.ratingsBug.setAttribute('id', 'ratings_bug')
+T.ratingsBug.setAttribute('width', 20)
+T.appendChild(T.ratingsBug)
+
 T.postMarkupStyling = function() {
 	let T = View.endFrame
 
-	// Ratings Bug
-	if (adData.hasRatings) {
-		T.ratingsBug = new UIImage({
-			target: T,
-			id: 'ratingsBug',
-			source: adData.ratingsSrc,
-			css: {
-				width: 20,
-				height: 20
-			}
+	// title treatment
+	Align.set(T.tt, {
+		x: Align.CENTER,
+		y: Align.CENTER
+	})
+
+	Align.set(T.pedigree, {
+		x:{
+			type: Align.CENTER,
+			against: T.tt
+		},
+		y: {
+			type: Align.CENTER,
+			against: 55
+		}
+	})
+
+	if (adData.hasFTM) {
+		// free trial messaging
+		Styles.setCss(T.ftm, {
+			color: '#fff',
+			fontSize: 14,
+			letterSpacing: 1,
+			textAlign: 'center'
 		})
-		Align.set(T.ratingsBug, {
-			x: {
-				type: Align.RIGHT,
-				offset: -5
-			},
+		Align.set(T.ftm, {
+			x: Align.CENTER,
 			y: {
 				type: Align.BOTTOM,
-				offset: -5
+				offset: -48
 			}
 		})
+		T.removeChild(T.tuneIn)
+	} else {
+		// tune-in
+		Styles.setCss(T.tuneIn, {
+			color: '#fff',
+			fontSize: 16,
+			letterSpacing: 1,
+			textAlign: 'center'
+		})
+		Align.set(T.tuneIn, {
+			x: Align.CENTER,
+			y: {
+				type: Align.BOTTOM,
+				offset: -48
+			}
+		})
+		T.removeChild(T.ftm)
 	}
-
-	// tune-in
-	Styles.setCss(T.tunein, {
-		color: '#fff',
-		fontSize: 16,
-		letterSpacing: 1,
-		textAlign: 'center',
-		visibility: adData.hasFTM ? 'hidden' : 'visible'
-	})
-	Align.set(T.tunein, {
-		x: Align.CENTER,
-		y: {
-			type: Align.TOP,
-			offset: 184
-		}
-	})
-
-	// ftm
-	Styles.setCss(T.ftm, {
-		color: '#fff',
-		fontSize: 14,
-		letterSpacing: 1,
-		textAlign: 'center',
-		visibility: adData.hasFTM ? 'visible' : 'hidden'
-	})
-	Align.set(T.ftm, {
-		x: Align.CENTER,
-		y: {
-			type: Align.TOP,
-			offset: 184
-		}
-	})
 
 	// logo
 	Align.set(T.netflixLogo, {
@@ -222,6 +229,22 @@ T.postMarkupStyling = function() {
 			offset: 210
 		}
 	})
+
+	// ratings bug
+	if (adData.hasRatings) {
+		Align.set(T.ratingsBug, {
+			x: {
+				type: Align.RIGHT,
+				offset: -5
+			},
+			y: {
+				type: Align.BOTTOM,
+				offset: -5
+			}
+		})
+	} else {
+		T.removeChild(T.ratingsBug)
+	}
 }
 
 

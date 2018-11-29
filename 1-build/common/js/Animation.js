@@ -1,5 +1,4 @@
 import { Styles, Markup, Align, Effects } from 'ad-view'
-import { Device } from 'ad-external'
 
 
 export class Animation {
@@ -20,7 +19,7 @@ export class Animation {
 	}
 
 	static playIntro() {
-		if (Device.type == 'desktop') {
+		if (View.intro) {
 			Styles.setCss(View.intro.netflixLogo,{ opacity:1 })
 			View.intro.introVideoPlayer.play()
 
@@ -38,13 +37,13 @@ export class Animation {
 
 	
 	static showEndFrame() {
-		console.log('Animation.showEndFrame()')
-		
-		View.intro.hide()
+        console.log('Animation.showEndFrame()')
+        
+		if (View.intro) View.intro.hide()
 		View.endFrame.show()
 
 let delay = 0
-TweenLite.from(View.endFrame.tunein, 0.5, { alpha: 0, delay: delay })
+TweenLite.from(View.endFrame.tuneIn, 0.5, { alpha: 0, delay: delay })
 TweenLite.from(View.endFrame.ftm, 0.5, { alpha: 0, delay: delay })
 TweenLite.from(View.endFrame.netflixLogo, 0.5, { alpha: 0, delay: delay })
 TweenLite.from(View.endFrame.cta, 0.5, { alpha: 0, delay: delay })

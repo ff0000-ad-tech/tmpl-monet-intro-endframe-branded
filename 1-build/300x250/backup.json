@@ -1,54 +1,57 @@
 {
-	"rootAssets": {
-		"text.Tune_In": {
-			"type": "text",
-			"id": "Tune_In",
-			"text": "New episodes<br>now streaming"
-		},
-		"text.CTA": {
-			"type": "text",
-			"id": "CTA",
-			"text": "WATCH NOW"
-		},
-		"text.FTM": {
-			"type": "text",
-			"id": "FTM",
-			"text": ""
-		},
-		"url.Exit_URL_iOS": {
-			"type": "url",
-			"id": "Exit_URL_iOS",
-			"url": "https://www.netflix.com/"
-		},
-		"url.Exit_URL_Android": {
-			"type": "url",
-			"id": "Exit_URL_Android",
-			"url": "https://www.netflix.com/"
-		},
-		"url.Exit_URL_Desktop": {
-			"type": "url",
-			"id": "Exit_URL_Desktop",
-			"url": "https://www.netflix.com/"
-		},
-		"video.Supercut": {
-			"type": "video",
-			"id": "Supercut",
-			"url": "http://ae.nflximg.net/monet/video/fpo/1x1.mp4",
-			"videoType": "SUPERCUT"
-		},
-		"bool.Toggle_Supercut": {
-			"type": "bool",
-			"id": "Toggle_Supercut",
-			"value": true
-		},
-		"image.Ratings_Bug_20x20": {
-			"type": "image",
-			"id": "Ratings_Bug_20x20",
-			"url": "",
-			"height": 20,
-			"width": 20
-		}
-	},
-	"assetGroups": [],
-	"localizations": {}
+    "rootAssets": {
+        "image.Title_Treatment": {
+            "type": "image",
+            "id": "Title_Treatment",
+            "url": "https://ae.nflximg.net/assets/prod/84a7ec8d-cfe3-44d5-9c6c-e1c176a1d836/20181105/22ecdc70-8f35-4f12-a512-146c6babeb2b.png"
+        },
+        "text.Tune_In": {
+            "type": "text",
+            "id": "Tune_In",
+            "text": "New episodes<br>now streaming"
+        },
+        "text.FTM": {
+            "type": "text",
+            "id": "FTM",
+            "text": ""
+        },
+        "text.CTA": {
+            "type": "text",
+            "id": "CTA",
+            "text": "WATCH NOW"
+        },
+        "url.Exit_URL_iOS": {
+            "type": "url",
+            "id": "Exit_URL_iOS",
+            "url": "https://www.netflix.com/"
+        },
+        "url.Exit_URL_Android": {
+            "type": "url",
+            "id": "Exit_URL_Android",
+            "url": "https://www.netflix.com/"
+        },
+        "url.Exit_URL_Desktop": {
+            "type": "url",
+            "id": "Exit_URL_Desktop",
+            "url": "https://www.netflix.com/"
+        },
+        "video.Supercut": {
+            "type": "video",
+            "id": "Supercut",
+            "url": "http://ae.nflximg.net/monet/video/fpo/1x1.mp4",
+            "videoType": "SUPERCUT"
+        },
+        "bool.Toggle_Supercut": {
+            "type": "bool",
+            "id": "Toggle_Supercut",
+            "value": true
+        },
+        "image.Ratings_Bug_20x20": {
+            "type": "image",
+            "id": "Ratings_Bug_20x20",
+            "url": "https://ae.nflximg.net/assets/prod/84a7ec8d-cfe3-44d5-9c6c-e1c176a1d836/20181105/3881d789-854f-4624-a8fe-a00b0ca33c12.png"
+        }
+    },
+    "assetGroups": [],
+    "localizations": {}
 }

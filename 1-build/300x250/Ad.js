@@ -1,8 +1,9 @@
+import { Core } from 'ad-control'
 import { Preflight } from '@common/js/Preflight.js'
 import { EndFrame, Main, Intro, NetflixRibbon, MainBorder } from '@common/js/Build.js'
 import { Animation } from '@common/js/Animation.js'
-import { Core } from 'ad-control'
 import { Control } from '@common/js/Control.js'
+import { Device } from 'ad-external'
 
 
 export class Ad {
@@ -24,7 +25,7 @@ export class Ad {
 
 
 		View.main = new Main()
-View.intro = new Intro({ target: View.main })
+if (Device.type === 'desktop') View.intro = new Intro({ target: View.main })
 View.endFrame = new EndFrame({ target: View.main })
 
 		View.ribbon = new NetflixRibbon()
@@ -32,10 +33,8 @@ View.mainBorder = new MainBorder()
 
 
 
-		Control.postMarkup()
 
 
-		Animation.start()
 
 	}
 
