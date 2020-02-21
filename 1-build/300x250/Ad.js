@@ -8,9 +8,9 @@ import { Device } from 'ad-external'
 
 export class Ad {
 	// called from index.html onImpression()
-	static launch(fbaContent) {
+	static launch(binaryAssets) {
 		console.log('Ad.launch()')
-		Core.init(fbaContent)
+		Core.init(binaryAssets)
 			.then(() => Preflight.init())
 			.then(() => Core.loadDynamic())
 			.then(() => Ad.prepare())
@@ -33,15 +33,18 @@ View.mainBorder = new MainBorder()
 
 
 
+if (View.monetIntegrator.hasAttribute('ready')) {
+	Control.handleMonetLoadComplete(View.monetIntegrator)
+} else {
+	View.monetIntegrator.addEventListener('ready', function(event) {
+		Control.handleMonetLoadComplete(View.monetIntegrator)
+	})
+}
+
 
 
 
 	}
-
-static initMonet(element) {
-	console.log('Ad.initMonet()')
-	Control.handleMonetLoadComplete(element)
-}
 
 
 }

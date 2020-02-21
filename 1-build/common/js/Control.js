@@ -93,6 +93,7 @@ ImageManager.load(function() {
 	static handleIntroClick(event) {
 		View.intro.hide()
 		Animation.showEndFrame()
+		View.intro.introVideoPlayer.pause()
 		Control.handleClick()
 	}
 	
